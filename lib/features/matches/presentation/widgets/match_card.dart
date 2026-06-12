@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:circle_flags/circle_flags.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/country_mapper.dart';
 import '../../domain/entities/match_entity.dart';
 
 class MatchCard extends StatelessWidget {
@@ -7,15 +9,6 @@ class MatchCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const MatchCard({Key? key, required this.match, required this.onTap}) : super(key: key);
-
-  String _getTeamInitials(String name) {
-    if (name.isEmpty) return '??';
-    final words = name.trim().split(RegExp(r'\s+'));
-    if (words.length > 1) {
-      return '${words[0][0]}${words[1][0]}'.toUpperCase();
-    }
-    return name.length >= 2 ? name.substring(0, 2).toUpperCase() : name.toUpperCase();
-  }
 
   Widget _buildStatusBadge() {
     Color bgColor;
@@ -103,18 +96,12 @@ class MatchCard extends StatelessWidget {
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
                         children: [
-                          CircleAvatar(
-                            radius: 26,
-                            backgroundColor: AppTheme.primary,
-                            child: Text(
-                              _getTeamInitials(match.homeTeamName),
-                              style: AppTheme.headlineMd.copyWith(color: AppTheme.gold),
-                            ),
-                          ),
+                          CircleFlag(CountryMapper.getCode(match.homeTeamName), size: 48),
                           const SizedBox(height: AppTheme.baseSpacing),
                           Text(
                             match.homeTeamName,
@@ -149,14 +136,7 @@ class MatchCard extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          CircleAvatar(
-                            radius: 26,
-                            backgroundColor: AppTheme.primary,
-                            child: Text(
-                              _getTeamInitials(match.awayTeamName),
-                              style: AppTheme.headlineMd.copyWith(color: AppTheme.gold),
-                            ),
-                          ),
+                          CircleFlag(CountryMapper.getCode(match.awayTeamName), size: 48),
                           const SizedBox(height: AppTheme.baseSpacing),
                           Text(
                             match.awayTeamName,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:circle_flags/circle_flags.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/country_mapper.dart';
 import '../../domain/repositories/match_repository.dart';
 import '../../domain/entities/match_detail_entity.dart';
 
@@ -20,15 +22,6 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
   void initState() {
     super.initState();
     _matchDetailFuture = widget.repository.getMatchDetails(widget.matchId);
-  }
-
-  String _getTeamInitials(String name) {
-    if (name.isEmpty) return '??';
-    final words = name.trim().split(RegExp(r'\s+'));
-    if (words.length > 1) {
-      return '${words[0][0]}${words[1][0]}'.toUpperCase();
-    }
-    return name.length >= 2 ? name.substring(0, 2).toUpperCase() : name.toUpperCase();
   }
 
   Widget _buildStatusBadge(String status) {
@@ -117,17 +110,20 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                       const SizedBox(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Column(
                               children: [
-                                CircleAvatar(
-                                  radius: 36,
-                                  backgroundColor: AppTheme.surface,
-                                  child: Text(_getTeamInitials(match.homeTeamName), style: AppTheme.headlineLg.copyWith(color: AppTheme.primary)),
-                                ),
+                                CircleFlag(CountryMapper.getCode(match.homeTeamName), size: 64),
                                 const SizedBox(height: 12),
-                                Text(match.homeTeamName, style: AppTheme.bodyMd.copyWith(color: AppTheme.onPrimary, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                                Text(
+                                  match.homeTeamName,
+                                  style: AppTheme.bodyMd.copyWith(color: AppTheme.onPrimary, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ),
@@ -138,13 +134,15 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                           Expanded(
                             child: Column(
                               children: [
-                                CircleAvatar(
-                                  radius: 36,
-                                  backgroundColor: AppTheme.surface,
-                                  child: Text(_getTeamInitials(match.awayTeamName), style: AppTheme.headlineLg.copyWith(color: AppTheme.primary)),
-                                ),
+                                CircleFlag(CountryMapper.getCode(match.awayTeamName), size: 64),
                                 const SizedBox(height: 12),
-                                Text(match.awayTeamName, style: AppTheme.bodyMd.copyWith(color: AppTheme.onPrimary, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                                Text(
+                                  match.awayTeamName,
+                                  style: AppTheme.bodyMd.copyWith(color: AppTheme.onPrimary, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ),
