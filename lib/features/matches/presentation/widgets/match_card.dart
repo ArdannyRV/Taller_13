@@ -36,7 +36,8 @@ class MatchCard extends StatelessWidget {
       case 'SCHEDULED':
       case 'TIMED':
       default:
-        bgColor = AppTheme.primaryContainer;
+        bgColor = AppTheme.gold;
+        textColor = AppTheme.primary;
         text = 'PROGRAMADO';
         break;
     }
@@ -67,16 +68,12 @@ class MatchCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.surface,
         borderRadius: AppTheme.borderLg,
+        border: Border.all(color: AppTheme.outline.withOpacity(0.4), width: 1),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.onSurface.withOpacity(0.05),
+            color: AppTheme.primary.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
-          ),
-          BoxShadow(
-            color: AppTheme.onSurface.withOpacity(0.02),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -111,17 +108,17 @@ class MatchCard extends StatelessWidget {
                       child: Column(
                         children: [
                           CircleAvatar(
-                            radius: 24,
-                            backgroundColor: AppTheme.surfaceVariant,
+                            radius: 26,
+                            backgroundColor: AppTheme.primary,
                             child: Text(
                               _getTeamInitials(match.homeTeamName),
-                              style: AppTheme.headlineMd.copyWith(color: AppTheme.primary),
+                              style: AppTheme.headlineMd.copyWith(color: AppTheme.gold),
                             ),
                           ),
                           const SizedBox(height: AppTheme.baseSpacing),
                           Text(
                             match.homeTeamName,
-                            style: AppTheme.bodyMd.copyWith(fontWeight: FontWeight.w600),
+                            style: AppTheme.bodyMd.copyWith(color: AppTheme.onSurface),
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -143,7 +140,7 @@ class MatchCard extends StatelessWidget {
                           ),
                           if (!hasStarted) ...[
                             const SizedBox(height: 4),
-                            Text(timeStr, style: AppTheme.statsNumeric.copyWith(color: AppTheme.outline)),
+                            Text(timeStr, style: AppTheme.statsNumeric.copyWith(color: AppTheme.onSurfaceVariant)),
                           ]
                         ],
                       ),
@@ -153,17 +150,17 @@ class MatchCard extends StatelessWidget {
                       child: Column(
                         children: [
                           CircleAvatar(
-                            radius: 24,
-                            backgroundColor: AppTheme.surfaceVariant,
+                            radius: 26,
+                            backgroundColor: AppTheme.primary,
                             child: Text(
                               _getTeamInitials(match.awayTeamName),
-                              style: AppTheme.headlineMd.copyWith(color: AppTheme.primary),
+                              style: AppTheme.headlineMd.copyWith(color: AppTheme.gold),
                             ),
                           ),
                           const SizedBox(height: AppTheme.baseSpacing),
                           Text(
                             match.awayTeamName,
-                            style: AppTheme.bodyMd.copyWith(fontWeight: FontWeight.w600),
+                            style: AppTheme.bodyMd.copyWith(color: AppTheme.onSurface),
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
