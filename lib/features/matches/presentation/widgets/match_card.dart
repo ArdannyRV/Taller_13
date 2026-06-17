@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:circle_flags/circle_flags.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/country_mapper.dart';
 import '../../domain/entities/match_entity.dart';
@@ -36,14 +35,14 @@ class MatchCard extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         text,
-        style: AppTheme.labelCaps.copyWith(color: textColor, letterSpacing: 1.0),
+        style: AppTheme.labelCaps.copyWith(color: textColor, letterSpacing: 1.0, fontSize: 10),
       ),
     );
   }
@@ -57,7 +56,7 @@ class MatchCard extends StatelessWidget {
     final timeStr = "${ecuadorDate.hour.toString().padLeft(2, '0')}:${ecuadorDate.minute.toString().padLeft(2, '0')}";
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppTheme.baseSpacing),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         color: AppTheme.surface,
         borderRadius: AppTheme.borderLg,
@@ -76,7 +75,7 @@ class MatchCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: AppTheme.borderLg,
           child: Padding(
-            padding: const EdgeInsets.all(AppTheme.gutter),
+            padding: const EdgeInsets.all(12),
             child: Column(
               children: [
                 Row(
@@ -85,14 +84,14 @@ class MatchCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         match.stage.replaceAll('_', ' '),
-                        style: AppTheme.labelCaps.copyWith(color: AppTheme.outline),
+                        style: AppTheme.labelCaps.copyWith(color: AppTheme.outline, fontSize: 10),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     _buildStatusBadge(),
                   ],
                 ),
-                const SizedBox(height: AppTheme.marginMobile),
+                const SizedBox(height: 8),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -101,11 +100,11 @@ class MatchCard extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          CircleFlag(CountryMapper.getCode(match.homeTeamName), size: 48),
-                          const SizedBox(height: AppTheme.baseSpacing),
+                          _FlagImage(code: CountryMapper.getCode(match.homeTeamName), size: 44),
+                          const SizedBox(height: 4),
                           Text(
                             match.homeTeamName,
-                            style: AppTheme.bodyMd.copyWith(color: AppTheme.onSurface),
+                            style: AppTheme.bodyMd.copyWith(color: AppTheme.onSurface, fontSize: 14),
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -115,19 +114,19 @@ class MatchCard extends StatelessWidget {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppTheme.gutter),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Column(
                         children: [
                           Text(
                             scoreText,
                             style: AppTheme.headlineLg.copyWith(
                               color: AppTheme.primary,
-                              fontSize: hasStarted ? 36 : 24,
+                              fontSize: hasStarted ? 30 : 20,
                             ),
                           ),
                           if (!hasStarted) ...[
                             const SizedBox(height: 4),
-                            Text(timeStr, style: AppTheme.statsNumeric.copyWith(color: AppTheme.onSurfaceVariant)),
+                            Text(timeStr, style: AppTheme.statsNumeric.copyWith(color: AppTheme.onSurfaceVariant, fontSize: 14)),
                           ]
                         ],
                       ),
@@ -136,11 +135,11 @@ class MatchCard extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          CircleFlag(CountryMapper.getCode(match.awayTeamName), size: 48),
-                          const SizedBox(height: AppTheme.baseSpacing),
+                          _FlagImage(code: CountryMapper.getCode(match.awayTeamName), size: 44),
+                          const SizedBox(height: 4),
                           Text(
                             match.awayTeamName,
-                            style: AppTheme.bodyMd.copyWith(color: AppTheme.onSurface),
+                            style: AppTheme.bodyMd.copyWith(color: AppTheme.onSurface, fontSize: 14),
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -154,6 +153,42 @@ class MatchCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _FlagImage extends StatelessWidget {
+  final String code;
+  final double size;
+
+  const _FlagImage({Key? key, required this.code, this.size = 48}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: Image.network(
+        'https://flagcdn.com/w80/$code.png',
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            width: size,
+            height: size,
+            color: AppTheme.surfaceVariant,
+            child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            width: size,
+            height: size,
+            color: AppTheme.surfaceVariant,
+            child: const Icon(Icons.flag, color: AppTheme.onSurfaceVariant),
+          );
+        },
       ),
     );
   }

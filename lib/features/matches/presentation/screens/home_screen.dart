@@ -67,24 +67,56 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final dateDisplay = "${_selectedDate.day.toString().padLeft(2, '0')}/${_selectedDate.month.toString().padLeft(2, '0')}/${_selectedDate.year}";
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Mundial 2026', style: AppTheme.headlineMd),
-            Text('Partidos del $dateDisplay', style: AppTheme.bodyMd),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/wallpaper_mundial_app.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Mundial 2026', style: AppTheme.headlineMd),
+              Text('Partidos del $dateDisplay', style: AppTheme.bodyMd),
+            ],
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                bottom: BorderSide(color: Colors.grey.shade200, width: 1),
+              ),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    children: [
+                      Expanded(child: Container(height: 3, color: Colors.red.shade700)),
+                      Expanded(child: Container(height: 3, color: Colors.green.shade700)),
+                      Expanded(child: Container(height: 3, color: Colors.blue.shade700)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.calendar_month, color: AppTheme.primary),
+              onPressed: () => _selectDate(context),
+            ),
           ],
         ),
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.calendar_month, color: AppTheme.primary),
-            onPressed: () => _selectDate(context),
-          ),
-        ],
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppTheme.marginMobile),
         child: FutureBuilder<List<MatchEntity>>(
@@ -125,6 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
+      ),
       ),
     );
   }
